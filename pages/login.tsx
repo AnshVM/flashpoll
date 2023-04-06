@@ -8,7 +8,6 @@ export default function Signup() {
                 <Input placeholder="Email"></Input>
                 <Input placeholder="Password"></Input>
                 <Button colorScheme='yellow'>Sign in with email</Button>
-                <Button colorScheme="blue">Sign in with Google</Button>
             </div>
         </div>
     )
