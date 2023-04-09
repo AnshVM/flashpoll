@@ -6,6 +6,7 @@ import Error from './common/Error';
 import PasswordInput from './common/PasswordInput';
 import { useRouter } from 'next/router';
 import { useStore } from '@/store/store';
+import Link from 'next/link';
 
 export default function Signup() {
     
@@ -58,6 +59,7 @@ export default function Signup() {
                 )}
 
                 <Button onClick={handleLogin} colorScheme='yellow'>Sign in with email</Button>
+                <Link href='/signup'><p className="text-center opacity-60 underline">Don't have an account?</p></Link>
             </div>
         </div>
     )

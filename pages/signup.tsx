@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Error from './common/Error'
 import { SignupRequest } from './types';
 import PasswordInput from './common/PasswordInput';
+import Link from 'next/link'
 
 export default function Signup() {
 
@@ -84,6 +85,9 @@ export default function Signup() {
                 )}
 
                 <Button onClick={handleSignup} colorScheme='yellow'>Create Account</Button>
+
+                <Link href='/login'><p className="text-center opacity-60 underline">Already have an account?</p></Link>
+
             </div>
         </div>
     )
