@@ -5,6 +5,7 @@ import axios, { Axios, AxiosError } from 'axios';
 import Error from './common/Error';
 import PasswordInput from './common/PasswordInput';
 import { useRouter } from 'next/router';
+import { useStore } from '@/store/store';
 
 export default function Signup() {
     
@@ -14,10 +15,14 @@ export default function Signup() {
     })
     const [error,setError] = useState("")
     const router = useRouter()
+    const setAccessToken = useStore(state => state.setAccessToken)
+    const setRefreshToken = useStore(state => state.setRefreshToken)
 
     const handleLogin = () => {
         axios.post('/api/login',request)
         .then((res) => {
+            setAccessToken(res.data.accessToken);
+            setRefreshToken(res.data.refreshToken); 
             router.push('/')
         })
         .catch((err:AxiosError<{error:string}>) => {
