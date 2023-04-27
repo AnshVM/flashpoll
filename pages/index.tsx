@@ -1,6 +1,11 @@
 import Head from 'next/head'
+import { Button } from '@chakra-ui/react'
+import Link from 'next/link'
+import { useStore } from '@/store/store'
 
 export default function Home() {
+
+
   return (
     <>
       <Head>
@@ -11,6 +16,7 @@ export default function Home() {
       </Head>
       <main>
         <h1 className='text-3xl font-bold text-center mt-10'>Welcome to Flashpoll ⚡</h1>
+        <Link href="/create"><Button colorScheme='yellow'>Create Poll</Button></Link> 
       </main>
     </>
   )
