@@ -40,6 +40,9 @@ export default function Poll() {
             })
     }, [pollID])
 
+    const handleCopy = async () => {
+        await navigator.clipboard.writeText(window.location.href)
+    }
 
     return (
         <div className="bg-dark min-h-screen text-white">
@@ -60,8 +63,8 @@ export default function Poll() {
                             </div>
                             <div className="flex flex-col gap-1">
                                <h4 className="text-slate-300 font-semibold text-sm">Share</h4>
-                               <QRCode size={150} bgColor="#001D3D" fgColor="#FFC300" value={`https://localhost:3000/poll/results/${pollID}`} />
-                               <Button colorScheme="green" className="mt-2" variant="outline" _hover={{}}><LinkIcon /> Copy Link</Button> 
+                               <QRCode size={150} bgColor="#001D3D" fgColor="#FFC300" value={window.location.href} />
+                               <Button onClick={handleCopy} colorScheme="green" className="mt-2" variant="outline" _hover={{}}><LinkIcon /> Copy Link</Button> 
                             </div>
                         </div>
                     </div>
