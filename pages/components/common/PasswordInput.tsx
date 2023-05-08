@@ -1,7 +1,5 @@
 import { useState, Dispatch, SetStateAction } from 'react'
 import { InputGroup, Input, InputRightElement, Button } from '@chakra-ui/react'
-import { SignupRequest, LoginRequest } from '../types'
-
 
 export default function PasswordInput<T extends {password:string}>(props: {setRequest:Dispatch<SetStateAction<T>>}) {
     const [show, setShow] = useState(false)
