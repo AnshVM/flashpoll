@@ -6,8 +6,6 @@ import { Button } from '@chakra-ui/react'
 import { LinkIcon } from "@chakra-ui/icons";
 import { useStore } from "@/store/store";
 import QRCode from "react-qr-code";
-import { connect } from "http2";
-import { idText } from "typescript";
 
 type Option = {
     name: string;
@@ -67,10 +65,6 @@ export default function Poll() {
         }
 
     }, [pollID])
-
-    useEffect(() => {console.log(poll)},[poll])
-
-
 
     const handleCopy = async () => {
         await navigator.clipboard.writeText(window.location.href)
