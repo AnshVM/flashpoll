@@ -41,6 +41,8 @@ export default function Poll() {
         if (!pollID) return
         axios.get(`${process.env.NEXT_PUBLIC_API}/poll/${pollID}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
             .then((res) => {
+                let data:Poll = res.data
+                data.options = data.options.sort((a,b) => b.votes - a.votes) 
                 setPoll(res.data)
             })
             .catch((err) => {
