@@ -6,6 +6,8 @@ import { Button } from '@chakra-ui/react'
 import { LinkIcon } from "@chakra-ui/icons";
 import { useStore } from "@/store/store";
 import QRCode from "react-qr-code";
+import { connect } from "http2";
+import { idText } from "typescript";
 
 type Option = {
     name: string;
@@ -19,6 +21,12 @@ type Poll = {
     options: Option[];
     totalVotes: number;
     userVote: Option;
+}
+
+type WSPollUpdate = {
+    id: number;
+    options: Option[];
+    totalVotes:number;
 }
 
 export default function Poll() {
@@ -38,7 +46,29 @@ export default function Poll() {
             .catch((err) => {
                 console.log(err)
             })
+
+        if (window.WebSocket) {
+            const conn = new WebSocket(`${process.env.NEXT_PUBLIC_WS}/${pollID}`);
+            conn.onopen = (e: Event) => {
+                console.log(e)
+            }
+            conn.onclose = (e: CloseEvent) => {
+                console.log('connection closed')
+            }
+            conn.onmessage = (e: MessageEvent) => {
+                const data: WSPollUpdate = JSON.parse(e.data)
+                setPoll((prev) => {
+                    if (!prev) return undefined
+                    return {...prev,totalVotes:data.totalVotes,options:data.options} 
+                })
+            }
+        }
+
     }, [pollID])
+
+    useEffect(() => {console.log(poll)},[poll])
+
+
 
     const handleCopy = async () => {
         await navigator.clipboard.writeText(window.location.href)
@@ -62,9 +92,9 @@ export default function Poll() {
                                 <p className="font-bold text-xl">{poll.totalVotes}</p>
                             </div>
                             <div className="flex flex-col gap-1">
-                               <h4 className="text-slate-300 font-semibold text-sm">Share</h4>
-                               <QRCode size={150} bgColor="#001D3D" fgColor="#FFC300" value={window.location.href} />
-                               <Button onClick={handleCopy} colorScheme="green" className="mt-2" variant="outline" _hover={{}}><LinkIcon /> Copy Link</Button> 
+                                <h4 className="text-slate-300 font-semibold text-sm">Share</h4>
+                                <QRCode size={150} bgColor="#001D3D" fgColor="#FFC300" value={window.location.href} />
+                                <Button onClick={handleCopy} colorScheme="green" className="mt-2" variant="outline" _hover={{}}><LinkIcon /> Copy Link</Button>
                             </div>
                         </div>
                     </div>

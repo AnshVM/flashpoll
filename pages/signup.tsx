@@ -2,9 +2,9 @@ import { useRouter } from 'next/router'
 import { Input, Button } from '@chakra-ui/react';
 import axios, { AxiosError } from 'axios';
 import { useState } from 'react';
-import Error from './common/Error'
+import Error from './components/common/Error'
 import { SignupRequest } from './types';
-import PasswordInput from './common/PasswordInput';
+import PasswordInput from './components/common/PasswordInput';
 import Link from 'next/link'
 
 export default function Signup() {

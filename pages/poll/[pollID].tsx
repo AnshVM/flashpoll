@@ -5,6 +5,7 @@ import axios from "axios";
 import { useStore } from "@/store/store";
 import { Button } from "@chakra-ui/react";
 import { ArrowRightIcon } from "@chakra-ui/icons";
+import Link from "next/link"
 
 type Option = {
     name: string;
@@ -16,7 +17,7 @@ type Poll = {
     title: string;
     options: Option[];
     totalVotes: number;
-    userVote:Option;
+    userVote: Option;
 }
 
 export default function PollSubmitPage() {
@@ -31,8 +32,8 @@ export default function PollSubmitPage() {
     useEffect(() => {
         if (!pollID) return
         axios.get(`${process.env.NEXT_PUBLIC_API}/poll/${pollID}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
-            .then((res:{data:Poll}) => {
-                if(res.data.userVote.id !== 0 ) {
+            .then((res: { data: Poll }) => {
+                if (res.data.userVote.id !== 0) {
                     router.push(`/poll/results/${pollID}`)
                 }
                 setPoll(res.data)
@@ -43,7 +44,7 @@ export default function PollSubmitPage() {
     }, [pollID])
 
     const handleSubmitVote = () => {
-        if(selectedOption === -1) return
+        if (selectedOption === -1) return
         axios.post(
             `${process.env.NEXT_PUBLIC_API}/poll/submit`,
             { optionID: selectedOption },
@@ -71,7 +72,15 @@ export default function PollSubmitPage() {
                 </div>
                 <div className="flex flex-row justify-between mt-3">
                     <Button onClick={handleSubmitVote} size="lg" colorScheme="yellow">Submit Vote</Button>
-                    <Button size="lg" variant="link" _hover={{}} className="hover:text-slate-200">Jump to results <ArrowRightIcon className="mx-2" /></Button>
+                    <Link href={`/poll/results/${pollID}`}>
+                        <Button
+                            size="lg"
+                            variant="link"
+                            _hover={{}}
+                            className="hover:text-slate-200">
+                            Jump to results <ArrowRightIcon className="mx-2" />
+                        </Button>
+                    </Link>
                 </div>
             </div>
         </div>
