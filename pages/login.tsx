@@ -1,6 +1,6 @@
 import { Input, Button } from '@chakra-ui/react';
 import { KeyboardEventHandler, useEffect, useState } from 'react';
-import { LoginRequest } from './types';
+import { LoginRequest } from '../types';
 import axios, { Axios, AxiosError } from 'axios';
 import Error from './components/common/Error';
 import PasswordInput from './components/common/PasswordInput';

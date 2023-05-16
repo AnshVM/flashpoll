@@ -3,7 +3,7 @@ import { Input, Button } from '@chakra-ui/react';
 import axios, { AxiosError } from 'axios';
 import { useState } from 'react';
 import Error from './components/common/Error'
-import { SignupRequest } from './types';
+import { SignupRequest } from '../types';
 import PasswordInput from './components/common/PasswordInput';
 import Link from 'next/link'
 
