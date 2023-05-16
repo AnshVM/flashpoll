@@ -4,7 +4,8 @@ import axios from 'axios';
 import { access } from 'fs';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState} from 'react';
+
 
 export default function Navbar() {
 
@@ -22,20 +23,23 @@ export default function Navbar() {
             })
     }
 
+
     return (
         <div className="flex flex-row justify-between px-5 py-5">
-            <div>
+            <Link href="/">
                 <h1 className="text-3xl font-bold text-white">Flashpoll⚡</h1>
-            </div>
+            </Link>
+
             {accessToken && (
                 <Button onClick={handleLogout} textColor='yellow' _hover={{}} colorScheme='yellow' bgColor="transparent" borderColor="yellow.400" border="1px">Logout</Button>
             )}
 
             {!accessToken && (
                 <Link href="/login">
-                <Button  textColor='yellow' _hover={{}} colorScheme='yellow' bgColor="transparent" borderColor="yellow.400" border="1px">Login</Button>
+                    <Button textColor='yellow' _hover={{}} colorScheme='yellow' bgColor="transparent" borderColor="yellow.400" border="1px">Login</Button>
                 </Link>
             )}
+
         </div>
     )
 }

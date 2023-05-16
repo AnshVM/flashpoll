@@ -67,7 +67,7 @@ export default function Poll() {
     }, [pollID])
 
     const handleCopy = async () => {
-        await navigator.clipboard.writeText(window.location.href)
+        await navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_FE_URL}/poll/${pollID}`)
     }
 
     return (

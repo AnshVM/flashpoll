@@ -4,6 +4,7 @@ import { AddIcon, CloseIcon } from '@chakra-ui/icons'
 import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react'
 import axios from 'axios'
 import { useStore } from '@/store/store'
+import { useRouter } from 'next/router'
 type Option = {
     value: string;
 }
@@ -13,6 +14,7 @@ export default function Create() {
     const [title, setTitle] = useState("")
     const [options, setOptions] = useState<Option[]>([{ value: "" }])
     const accessToken = useStore((state) => state.accessToken)
+    const router = useRouter()
 
     const createPoll = () => {
         axios.post("/api/poll", { title, options:options.map(opt => opt.value) },
@@ -21,7 +23,7 @@ export default function Create() {
             }
         )
             .then((res) => {
-                console.log("Poll created")
+                router.push(`/poll/results/${res.data.id}`)
             })
     }
 
