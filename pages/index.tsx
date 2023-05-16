@@ -1,8 +1,8 @@
-import Head from 'next/head'
 import Navbar from './components/Navbar'
 import { Button } from '@chakra-ui/react'
 import Link from 'next/link'
 import { useStore } from '@/store/store'
+import Head from './components/common/Head'
 
 export default function Home() {
   
@@ -10,12 +10,7 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>Flashpoll</title>
-        <meta name="description" content="Voting app. Simple.Fast.Secure" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/flashpoll.ico" />
-      </Head>
+      <Head title="Flashpoll" />
       <main className="bg-dark min-h-screen">
         <Navbar />
         <div className="text-center py-20">

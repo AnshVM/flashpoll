@@ -5,6 +5,7 @@ import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'reac
 import axios from 'axios'
 import { useStore } from '@/store/store'
 import { useRouter } from 'next/router'
+import Head from './components/common/Head'
 type Option = {
     value: string;
 }
@@ -17,7 +18,7 @@ export default function Create() {
     const router = useRouter()
 
     const createPoll = () => {
-        axios.post("/api/poll", { title, options:options.map(opt => opt.value) },
+        axios.post("/api/poll", { title, options: options.map(opt => opt.value) },
             {
                 headers: { "Authorization": `Bearer ${accessToken}` }
             }
@@ -29,41 +30,44 @@ export default function Create() {
 
     useEffect(() => {
         console.log(options)
-    },[options])
+    }, [options])
 
     return (
-        <div className="bg-dark min-h-screen text-white">
-            <Navbar />
-            <div className="px-5 flex flex-col gap-8 max-w-screen-lg mx-auto">
-                <div className="flex flex-col gap-2">
-                    <Badge
-                        fontSize={13}
-                        bgColor="yellow.200"
-                        color="black"
-                        width="fit-content"
-                        padding="1"
-                    >
-                        POLL TITLE
-                    </Badge>
+        <>
+            <Head title="Create Poll | Flashpoll" />
+            <div className="bg-dark min-h-screen text-white">
+                <Navbar />
+                <div className="px-5 flex flex-col gap-8 max-w-screen-lg mx-auto">
+                    <div className="flex flex-col gap-2">
+                        <Badge
+                            fontSize={13}
+                            bgColor="yellow.200"
+                            color="black"
+                            width="fit-content"
+                            padding="1"
+                        >
+                            POLL TITLE
+                        </Badge>
 
-                    <Input
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="The topic of your poll"
-                    />
-                </div>
+                        <Input
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            placeholder="The topic of your poll"
+                        />
+                    </div>
 
-                <div className="flex flex-col gap-4">
-                    {options.map((option, index) => <Option
-                        key={index}
-                        option={option}
-                        setOptions={setOptions}
-                        index={index}
-                    />)}
+                    <div className="flex flex-col gap-4">
+                        {options.map((option, index) => <Option
+                            key={index}
+                            option={option}
+                            setOptions={setOptions}
+                            index={index}
+                        />)}
+                    </div>
+                    <Button onClick={createPoll} colorScheme='yellow'>Create Poll</Button>
                 </div>
-                <Button onClick={createPoll} colorScheme='yellow'>Create Poll</Button>
             </div>
-        </div>
+        </>
     )
 }
 
@@ -79,7 +83,7 @@ function Option({ option, setOptions, index }: OptionProps) {
         setOptions(prev => (
             prev.map((prevOption, prevOptionIndex) => {
                 if (prevOptionIndex === index) {
-                    return {value: e.target.value }
+                    return { value: e.target.value }
                 } else {
                     return prevOption
                 }

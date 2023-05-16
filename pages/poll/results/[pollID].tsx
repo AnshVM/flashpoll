@@ -6,6 +6,7 @@ import { Button } from '@chakra-ui/react'
 import { LinkIcon } from "@chakra-ui/icons";
 import { useStore } from "@/store/store";
 import QRCode from "react-qr-code";
+import Head from "@/pages/components/common/Head";
 
 type Option = {
     name: string;
@@ -24,7 +25,7 @@ type Poll = {
 type WSPollUpdate = {
     id: number;
     options: Option[];
-    totalVotes:number;
+    totalVotes: number;
 }
 
 export default function Poll() {
@@ -39,8 +40,8 @@ export default function Poll() {
         if (!pollID) return
         axios.get(`${process.env.NEXT_PUBLIC_API}/poll/${pollID}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
             .then((res) => {
-                let data:Poll = res.data
-                data.options = data.options.sort((a,b) => b.votes - a.votes) 
+                let data: Poll = res.data
+                data.options = data.options.sort((a, b) => b.votes - a.votes)
                 setPoll(res.data)
             })
             .catch((err) => {
@@ -59,7 +60,7 @@ export default function Poll() {
                 const data: WSPollUpdate = JSON.parse(e.data)
                 setPoll((prev) => {
                     if (!prev) return undefined
-                    return {...prev,totalVotes:data.totalVotes,options:data.options} 
+                    return { ...prev, totalVotes: data.totalVotes, options: data.options }
                 })
             }
         }
@@ -71,32 +72,35 @@ export default function Poll() {
     }
 
     return (
-        <div className="bg-dark min-h-screen text-white">
-            <Navbar />
-            {poll && (
-                <div className="pl-5 max-w-3xl mt-10 mx-10 lg:mx-auto">
-                    <h1 className="text-5xl font-bold">{poll.title}</h1>
-                    <div className="flex flex-row gap-5 mt-5">
-                        <div className="flex flex-col gap-3 flex-grow">
-                            {poll.options.map(option => (
-                                <PollOption key={option.id} option={option}></PollOption>
-                            ))}
-                        </div>
-                        <div className="">
-                            <div className="mb-5">
-                                <h4 className="text-slate-200 font-semibold text-md">Votes</h4>
-                                <p className="font-bold text-xl">{poll.totalVotes}</p>
+        <>
+            <Head title="Poll results | Flashpoll"/>
+            <div className="bg-dark min-h-screen text-white">
+                <Navbar />
+                {poll && (
+                    <div className="pl-5 max-w-3xl mt-10 mx-10 lg:mx-auto">
+                        <h1 className="text-5xl font-bold">{poll.title}</h1>
+                        <div className="flex flex-row gap-5 mt-5">
+                            <div className="flex flex-col gap-3 flex-grow">
+                                {poll.options.map(option => (
+                                    <PollOption key={option.id} option={option}></PollOption>
+                                ))}
                             </div>
-                            <div className="flex flex-col gap-1">
-                                <h4 className="text-slate-300 font-semibold text-sm">Share</h4>
-                                <QRCode size={150} bgColor="#001D3D" fgColor="#FFC300" value={window.location.href} />
-                                <Button onClick={handleCopy} colorScheme="green" className="mt-2" variant="outline" _hover={{}}><LinkIcon /> Copy Link</Button>
+                            <div className="">
+                                <div className="mb-5">
+                                    <h4 className="text-slate-200 font-semibold text-md">Votes</h4>
+                                    <p className="font-bold text-xl">{poll.totalVotes}</p>
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <h4 className="text-slate-300 font-semibold text-sm">Share</h4>
+                                    <QRCode size={150} bgColor="#001D3D" fgColor="#FFC300" value={window.location.href} />
+                                    <Button onClick={handleCopy} colorScheme="green" className="mt-2" variant="outline" _hover={{}}><LinkIcon /> Copy Link</Button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            )}
-        </div>
+                )}
+            </div>
+        </>
     )
 
 }

@@ -6,6 +6,7 @@ import { useStore } from "@/store/store";
 import { Button, Skeleton, Stack } from "@chakra-ui/react";
 import { ArrowRightIcon } from "@chakra-ui/icons";
 import Link from "next/link"
+import Head from "../components/common/Head";
 
 type Option = {
     name: string;
@@ -55,42 +56,45 @@ export default function PollSubmitPage() {
     }
 
     return (
-        <div className="bg-dark min-h-screen">
-            <Navbar />
-            <div className="text-white mx-auto max-w-3xl px-10 flex flex-col gap-5">
-                {!poll && (
-                    <Stack spacing={5}>
-                        <Skeleton opacity={0.15} height="40px" />
-                        <Skeleton borderRadius={8} opacity={0.15} height="70px" />
-                        <Skeleton borderRadius={8} opacity={0.15} height="70px" />
-                        <Skeleton borderRadius={8} opacity={0.15} height="70px" />
-                    </Stack>
-                )}
-                {poll && (<div>
-                    <h1 className="text-5xl font-bold">{poll?.title}</h1>
-                    <div className="flex flex-col gap-3 mt-5">
-                        {poll?.options.map((option) => {
-                            return (
-                                <div onClick={() => setSelectedOption(option.id)} key={option.id} className={`cursor-pointer hover:bg-slate-900 transition duration-300`}>
-                                    <h3 className={`${selectedOption === option.id ? 'border-yellow border-2' : ''} text-2xl font-bold border border-slate-600 rounded-lg py-5 pl-2`}>{option.name}</h3>
-                                </div>
-                            )
-                        })}
+        <>
+            <Head title="Submit Vote | Flashpoll" />
+            <div className="bg-dark min-h-screen">
+                <Navbar />
+                <div className="text-white mx-auto max-w-3xl px-10 flex flex-col gap-5">
+                    {!poll && (
+                        <Stack spacing={5}>
+                            <Skeleton opacity={0.15} height="40px" />
+                            <Skeleton borderRadius={8} opacity={0.15} height="70px" />
+                            <Skeleton borderRadius={8} opacity={0.15} height="70px" />
+                            <Skeleton borderRadius={8} opacity={0.15} height="70px" />
+                        </Stack>
+                    )}
+                    {poll && (<div>
+                        <h1 className="text-5xl font-bold">{poll?.title}</h1>
+                        <div className="flex flex-col gap-3 mt-5">
+                            {poll?.options.map((option) => {
+                                return (
+                                    <div onClick={() => setSelectedOption(option.id)} key={option.id} className={`cursor-pointer hover:bg-slate-900 transition duration-300`}>
+                                        <h3 className={`${selectedOption === option.id ? 'border-yellow border-2' : ''} text-2xl font-bold border border-slate-600 rounded-lg py-5 pl-2`}>{option.name}</h3>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>)}
+                    <div className="flex flex-row justify-between mt-3">
+                        <Button onClick={handleSubmitVote} size="lg" colorScheme="yellow">Submit Vote</Button>
+                        <Link className="mt-4" href={`/poll/results/${pollID}`}>
+                            <Button
+                                size="lg"
+                                variant="link"
+                                _hover={{}}
+                                className="hover:text-slate-200">
+                                Jump to results <ArrowRightIcon className="mx-2" />
+                            </Button>
+                        </Link>
                     </div>
-                </div>)}
-                <div className="flex flex-row justify-between mt-3">
-                    <Button onClick={handleSubmitVote} size="lg" colorScheme="yellow">Submit Vote</Button>
-                    <Link className="mt-4" href={`/poll/results/${pollID}`}>
-                        <Button
-                            size="lg"
-                            variant="link"
-                            _hover={{}}
-                            className="hover:text-slate-200">
-                            Jump to results <ArrowRightIcon className="mx-2" />
-                        </Button>
-                    </Link>
                 </div>
             </div>
-        </div>
+        </>
     )
 }

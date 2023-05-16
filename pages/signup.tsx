@@ -6,6 +6,7 @@ import Error from './components/common/Error'
 import { SignupRequest } from '../types';
 import PasswordInput from './components/common/PasswordInput';
 import Link from 'next/link'
+import Head from './components/common/Head';
 
 export default function Signup() {
 
@@ -57,39 +58,42 @@ export default function Signup() {
     }
 
     return (
-        <div className="bg-dark h-screen text-white flex flex-col justify-center">
-            <h1 className="w-auto mx-auto text-3xl font-bold">Flashpoll⚡</h1>
-            <div className="w-96 h-2/5 mx-auto p-6 flex flex-col gap-4">
-                <Input
-                    isInvalid={errorField === "username"}
-                    onChange={(e) => setField("username", e.target.value)}
-                    id="username"
-                    placeholder="Username"
-                    errorBorderColor='red.300'
-                >
-                </Input>
+        <>
+            <Head title="Signup | Flashpoll" />
+            <div className="bg-dark h-screen text-white flex flex-col justify-center">
+                <h1 className="w-auto mx-auto text-3xl font-bold">Flashpoll⚡</h1>
+                <div className="w-96 h-2/5 mx-auto p-6 flex flex-col gap-4">
+                    <Input
+                        isInvalid={errorField === "username"}
+                        onChange={(e) => setField("username", e.target.value)}
+                        id="username"
+                        placeholder="Username"
+                        errorBorderColor='red.300'
+                    >
+                    </Input>
 
-                <Input
-                    isInvalid={errorField === "email"}
-                    onChange={(e) => setField("email", e.target.value)}
-                    id="email"
-                    placeholder="Email"
-                    errorBorderColor='red.300'
-                >
-                </Input>
+                    <Input
+                        isInvalid={errorField === "email"}
+                        onChange={(e) => setField("email", e.target.value)}
+                        id="email"
+                        placeholder="Email"
+                        errorBorderColor='red.300'
+                    >
+                    </Input>
 
-                <PasswordInput setRequest={setRequest} />
+                    <PasswordInput setRequest={setRequest} />
 
-                {error && (
-                    <Error err={error} />
-                )}
+                    {error && (
+                        <Error err={error} />
+                    )}
 
-                <Button onClick={handleSignup} colorScheme='yellow'>Create Account</Button>
+                    <Button onClick={handleSignup} colorScheme='yellow'>Create Account</Button>
 
-                <Link href='/login'><p className="text-center opacity-60 underline">Already have an account?</p></Link>
+                    <Link href='/login'><p className="text-center opacity-60 underline">Already have an account?</p></Link>
 
+                </div>
             </div>
-        </div>
+        </>
     )
 }
 
