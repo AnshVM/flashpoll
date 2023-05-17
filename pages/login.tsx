@@ -21,7 +21,7 @@ export default function Signup() {
     const setRefreshToken = useStore(state => state.setRefreshToken)
 
     const handleLogin = () => {
-        axios.post('/api/login', request)
+        axios.post(`${process.env.NEXT_PUBLIC_API}/login`, request)
             .then((res) => {
                 setAccessToken(res.data.accessToken);
                 setRefreshToken(res.data.refreshToken);

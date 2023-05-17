@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     if(router.pathname === "/") return
-    axios.get('/api/refresh')
+    axios.get(`${process.env.NEXT_PUBLIC_API}/refresh`)
       .then((res) => {
         setAccessToken(res.data.accessToken)
         setRefreshToken(res.data.refreshToken)        
