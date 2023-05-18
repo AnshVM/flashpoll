@@ -32,7 +32,7 @@ export default function Signup() {
         setError("")
         setErrorField("")
 
-        axios.post(`${process.env.NEXT_PUBLIC_API}/signup`, request)
+        axios.post(`/api/signup`, request)
             .then(() => {
                 router.push('/login')
             })

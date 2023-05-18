@@ -23,6 +23,7 @@ export default function Navbar() {
             })
     }
 
+    console.log(accessToken)
 
     return (
         <div className="flex flex-row justify-between px-5 py-5">

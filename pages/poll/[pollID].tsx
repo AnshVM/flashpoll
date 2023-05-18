@@ -32,7 +32,7 @@ export default function PollSubmitPage() {
 
     useEffect(() => {
         if (!pollID) return
-        axios.get(`${process.env.NEXT_PUBLIC_API}/poll/${pollID}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
+        axios.get(`/api/poll/${pollID}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
             .then((res: { data: Poll }) => {
                 if (res.data.userVote.id !== 0) {
                     router.push(`/poll/results/${pollID}`)
@@ -42,7 +42,7 @@ export default function PollSubmitPage() {
             .catch((err) => {
                 console.log(err)
             })
-    }, [pollID])
+    }, [pollID,accessToken])
 
     const handleSubmitVote = () => {
         if (selectedOption === -1) return

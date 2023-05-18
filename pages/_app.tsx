@@ -21,11 +21,12 @@ export default function App({ Component, pageProps }: AppProps) {
 
 
   useEffect(() => {
-    if(router.pathname === "/") return
-    axios.get(`${process.env.NEXT_PUBLIC_API}/refresh`)
+    axios.get(`/api/refresh`)
       .then((res) => {
         setAccessToken(res.data.accessToken)
-        setRefreshToken(res.data.refreshToken)        
+        setRefreshToken(res.data.refreshToken)  
+        console.log("setting accessToken")
+        console.log(res.data.accessToken)      
       })
       .catch(() => router.push('/login'))
   },[])

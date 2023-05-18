@@ -18,7 +18,7 @@ export default function Create() {
     const router = useRouter()
 
     const createPoll = () => {
-        axios.post(`${process.env.NEXT_PUBLIC_API}/poll`, { title, options: options.map(opt => opt.value) },
+        axios.post(`/api/poll`, { title, options: options.map(opt => opt.value) },
             {
                 headers: { "Authorization": `Bearer ${accessToken}` }
             }
@@ -28,9 +28,6 @@ export default function Create() {
             })
     }
 
-    useEffect(() => {
-        console.log(options)
-    }, [options])
 
     return (
         <>

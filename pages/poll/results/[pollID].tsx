@@ -34,11 +34,13 @@ export default function Poll() {
 
     const accessToken = useStore((store) => store.accessToken)
 
+
+
     const [poll, setPoll] = useState<Poll>()
 
     useEffect(() => {
         if (!pollID) return
-        axios.get(`${process.env.NEXT_PUBLIC_API}/poll/${pollID}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
+        axios.get(`/api/poll/${pollID}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
             .then((res) => {
                 let data: Poll = res.data
                 data.options = data.options.sort((a, b) => b.votes - a.votes)
@@ -48,13 +50,19 @@ export default function Poll() {
                 console.log(err)
             })
 
+
+    }, [pollID,accessToken])
+
+    const handleCopy = async () => {
+        await navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_FE_URL}/poll/${pollID}`)
+    }
+
+    useEffect(() => {
         if (window.WebSocket) {
             const conn = new WebSocket(`${process.env.NEXT_PUBLIC_WS}/${pollID}`);
             conn.onopen = (e: Event) => {
-                console.log(e)
             }
             conn.onclose = (e: CloseEvent) => {
-                console.log('connection closed')
             }
             conn.onmessage = (e: MessageEvent) => {
                 const data: WSPollUpdate = JSON.parse(e.data)
@@ -64,16 +72,11 @@ export default function Poll() {
                 })
             }
         }
-
     }, [pollID])
-
-    const handleCopy = async () => {
-        await navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_FE_URL}/poll/${pollID}`)
-    }
 
     return (
         <>
-            <Head title="Poll results | Flashpoll"/>
+            <Head title="Poll results | Flashpoll" />
             <div className="bg-dark min-h-screen text-white">
                 <Navbar />
                 {poll && (
