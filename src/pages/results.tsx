@@ -1,12 +1,9 @@
 import axios from "axios";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
-import { Button } from '@chakra-ui/react'
-import { LinkIcon } from "@chakra-ui/icons";
-import { useStore } from "@/store/store";
+import Navbar from "../components/Navbar";
+import { useStore } from "../store/store";
 import QRCode from "react-qr-code";
-import Head from "@/pages/components/common/Head";
+import { Link, useParams } from "react-router-dom";
 
 type Option = {
     name: string;
@@ -29,17 +26,14 @@ type WSPollUpdate = {
 }
 
 export default function Poll() {
-    const router = useRouter()
-    const { pollID } = router.query
+    const { pollID } = useParams()
 
     const accessToken = useStore((store) => store.accessToken)
-
-
 
     const [poll, setPoll] = useState<Poll>()
 
     useEffect(() => {
-        if (!pollID) return
+        if (!pollID || !accessToken) return
         axios.get(`/api/poll/${pollID}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
             .then((res) => {
                 let data: Poll = res.data
@@ -53,16 +47,15 @@ export default function Poll() {
 
     }, [pollID,accessToken])
 
-    const handleCopy = async () => {
-        await navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_FE_URL}/poll/${pollID}`)
-    }
-
     useEffect(() => {
+
+        if (!pollID) return
+
         if (window.WebSocket) {
-            const conn = new WebSocket(`${process.env.NEXT_PUBLIC_WS}/${pollID}`);
-            conn.onopen = (e: Event) => {
+            const conn = new WebSocket(`ws://ec2-13-49-102-133.eu-north-1.compute.amazonaws.com/api/ws/${pollID}`);
+            conn.onopen = () => {
             }
-            conn.onclose = (e: CloseEvent) => {
+            conn.onclose = () => {
             }
             conn.onmessage = (e: MessageEvent) => {
                 const data: WSPollUpdate = JSON.parse(e.data)
@@ -76,12 +69,15 @@ export default function Poll() {
 
     return (
         <>
-            <Head title="Poll results | Flashpoll" />
             <div className="bg-dark min-h-screen text-white">
                 <Navbar />
                 {poll && (
                     <div className="pl-5 max-w-3xl mt-10 mx-10 lg:mx-auto">
                         <h1 className="text-5xl font-bold">{poll.title}</h1>
+                        <div className="mt-4">
+                            <p className="opacity-80 font-semibold">For vote submission navigate to:</p>
+                            <Link className="opacity-50" to={`${window.location.origin}/poll/${pollID}`}>{`${window.location.origin}/poll/${pollID}`}</Link>
+                        </div>
                         <div className="flex flex-row gap-5 mt-5">
                             <div className="flex flex-col gap-3 flex-grow">
                                 {poll.options.map(option => (
@@ -96,7 +92,6 @@ export default function Poll() {
                                 <div className="flex flex-col gap-1">
                                     <h4 className="text-slate-300 font-semibold text-sm">Share</h4>
                                     <QRCode size={150} bgColor="#001D3D" fgColor="#FFC300" value={window.location.href} />
-                                    <Button onClick={handleCopy} colorScheme="green" className="mt-2" variant="outline" _hover={{}}><LinkIcon /> Copy Link</Button>
                                 </div>
                             </div>
                         </div>

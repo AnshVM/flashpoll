@@ -1,22 +1,20 @@
 import { Input, Button } from '@chakra-ui/react';
-import { KeyboardEventHandler, useEffect, useState } from 'react';
+import { KeyboardEventHandler, useState } from 'react';
 import { LoginRequest } from '../types';
-import axios, { Axios, AxiosError } from 'axios';
-import Error from './components/common/Error';
-import PasswordInput from './components/common/PasswordInput';
-import { useRouter } from 'next/router';
-import { useStore } from '@/store/store';
-import Link from 'next/link';
-import Head from './components/common/Head';
+import axios, { AxiosError } from 'axios';
+import Error from '../components/common/Error';
+import PasswordInput from '../components/common/PasswordInput';
+import { redirect } from 'react-router-dom';
+import { useStore } from '../store/store';
+import { Link } from 'react-router-dom';
 
-export default function Signup() {
+export default function Login() {
 
     const [request, setRequest] = useState<LoginRequest>({
         email: "",
         password: ""
     })
     const [error, setError] = useState("")
-    const router = useRouter()
     const setAccessToken = useStore(state => state.setAccessToken)
     const setRefreshToken = useStore(state => state.setRefreshToken)
 
@@ -25,7 +23,7 @@ export default function Signup() {
             .then((res) => {
                 setAccessToken(res.data.accessToken);
                 setRefreshToken(res.data.refreshToken);
-                router.push('/')
+                redirect('/')
             })
             .catch((err: AxiosError<{ error: string }>) => {
                 switch (err.response?.data.error) {
@@ -39,7 +37,7 @@ export default function Signup() {
     }
 
     const setField = (field: string, value: string) => {
-        setRequest((prev) => ({ ...prev, [field]: value }))
+        setRequest((prev:LoginRequest) => ({ ...prev, [field]: value }))
     }
 
     const handleKeyUp: KeyboardEventHandler<HTMLDivElement> = (e) => {
@@ -50,7 +48,6 @@ export default function Signup() {
 
     return (
         <>
-            <Head title="Flashpoll | Login" />
             <div onKeyUp={handleKeyUp} className="bg-dark h-screen text-white flex flex-col justify-center">
                 <h1 className="w-auto mx-auto text-3xl font-bold">Flashpoll⚡</h1>
                 <div className="w-96 h-2/5 mx-auto p-6 flex flex-col gap-4">
@@ -62,7 +59,7 @@ export default function Signup() {
                     )}
 
                     <Button onClick={handleLogin} colorScheme='yellow'>Sign in with email</Button>
-                    <Link href='/signup'><p className="text-center opacity-60 underline">Don't have an account?</p></Link>
+                    <Link to='/signup'><p className="text-center opacity-60 underline">Don't have an account?</p></Link>
                 </div>
             </div>
         </>

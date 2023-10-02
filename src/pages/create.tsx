@@ -1,11 +1,11 @@
 import { Badge, Input, Button } from '@chakra-ui/react'
-import Navbar from './components/Navbar'
+import Navbar from '../components/Navbar'
 import { AddIcon, CloseIcon } from '@chakra-ui/icons'
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 import axios from 'axios'
-import { useStore } from '@/store/store'
-import { useRouter } from 'next/router'
-import Head from './components/common/Head'
+import { useStore } from '../store/store'
+import { redirect } from 'react-router-dom'
+
 type Option = {
     value: string;
 }
@@ -15,7 +15,6 @@ export default function Create() {
     const [title, setTitle] = useState("")
     const [options, setOptions] = useState<Option[]>([{ value: "" }])
     const accessToken = useStore((state) => state.accessToken)
-    const router = useRouter()
 
     const createPoll = () => {
         axios.post(`/api/poll`, { title, options: options.map(opt => opt.value) },
@@ -24,14 +23,13 @@ export default function Create() {
             }
         )
             .then((res) => {
-                router.push(`/poll/results/${res.data.id}`)
+                redirect(`/poll/results/${res.data.id}`)
             })
     }
 
 
     return (
         <>
-            <Head title="Create Poll | Flashpoll" />
             <div className="bg-dark min-h-screen text-white">
                 <Navbar />
                 <div className="px-5 flex flex-col gap-8 max-w-screen-lg mx-auto">
@@ -100,7 +98,7 @@ function Option({ option, setOptions, index }: OptionProps) {
 
     const removeOption = (optionIndex: number) => {
         setOptions(prevOptions => {
-            return prevOptions.filter((prevOption, index) => optionIndex !== index)
+            return prevOptions.filter((_, index) => optionIndex !== index)
         })
     }
 

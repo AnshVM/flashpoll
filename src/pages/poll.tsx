@@ -1,12 +1,11 @@
-import { useRouter } from "next/router";
+import { redirect, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useStore } from "@/store/store";
+import { useStore } from "../store/store";
 import { Button, Skeleton, Stack } from "@chakra-ui/react";
 import { ArrowRightIcon } from "@chakra-ui/icons";
-import Link from "next/link"
-import Head from "../components/common/Head";
+import { Link } from "react-router-dom";
 
 type Option = {
     name: string;
@@ -23,19 +22,18 @@ type Poll = {
 
 export default function PollSubmitPage() {
 
-    const router = useRouter()
     const [poll, setPoll] = useState<Poll>()
     const accessToken = useStore(state => state.accessToken)
     const [selectedOption, setSelectedOption] = useState<number>(-1)
 
-    const { pollID } = router.query
+    const { pollID } = useParams() 
 
     useEffect(() => {
-        if (!pollID) return
+        if (!pollID || !accessToken) return
         axios.get(`/api/poll/${pollID}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
             .then((res: { data: Poll }) => {
                 if (res.data.userVote.id !== 0) {
-                    router.push(`/poll/results/${pollID}`)
+                    redirect(`/poll/results/${pollID}`)
                 }
                 setPoll(res.data)
             })
@@ -46,18 +44,16 @@ export default function PollSubmitPage() {
 
     const handleSubmitVote = () => {
         if (selectedOption === -1) return
-        axios.post(
-            `${process.env.NEXT_PUBLIC_API}/poll/submit`,
+        axios.post(`/api/poll/submit`,
             { optionID: selectedOption },
             { headers: { Authorization: `Bearer ${accessToken}` } }
         ).then(() => {
-            router.push(`/poll/results/${pollID}`)
+            redirect(`/poll/results/${pollID}`)
         })
     }
 
     return (
         <>
-            <Head title="Submit Vote | Flashpoll" />
             <div className="bg-dark min-h-screen">
                 <Navbar />
                 <div className="text-white mx-auto max-w-3xl px-10 flex flex-col gap-5">
@@ -83,7 +79,7 @@ export default function PollSubmitPage() {
                     </div>)}
                     <div className="flex flex-row justify-between mt-3">
                         <Button onClick={handleSubmitVote} size="lg" colorScheme="yellow">Submit Vote</Button>
-                        <Link className="mt-4" href={`/poll/results/${pollID}`}>
+                        <Link className="mt-4" to={`/poll/results/${pollID}`}>
                             <Button
                                 size="lg"
                                 variant="link"
