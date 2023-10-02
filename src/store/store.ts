@@ -11,13 +11,25 @@ export const useStore = create<State>((set) => ({
     accessToken: "",
     refreshToken: "",
     setAccessToken: (accessToken: string) => {
+        if (accessToken === "") {
+            window.localStorage.removeItem("accessToken")
+        }
+        else {
+            window.localStorage.setItem("accessToken", accessToken)
+        }
         set((state) => {
-            return {...state,accessToken}
+            return { ...state, accessToken }
         })
     },
     setRefreshToken: (refreshToken: string) => {
+        if (refreshToken === "") {
+            window.localStorage.removeItem("refreshToken")
+        }
+        else {
+            window.localStorage.setItem("refreshToken", refreshToken)
+        }
         set((state) => {
-            return {...state,refreshToken}
+            return { ...state, refreshToken }
         })
-    } 
+    }
 }))

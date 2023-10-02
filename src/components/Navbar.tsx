@@ -1,6 +1,5 @@
 import { useStore } from '../store/store';
 import { Button } from '@chakra-ui/react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,12 +11,13 @@ export default function Navbar() {
     const nav = useNavigate();
 
     const handleLogout = () => {
-        setAccessToken("")
-        setRefreshToken("")
-        axios.post('/api/logout', {})
-            .then(() => {
-                nav('/login')
-            })
+        setAccessToken("");
+        setRefreshToken("");
+        // axios.post('/api/logout', {})
+        //     .then(() => {
+        //         nav('/login')
+        //     })
+        nav('/login');
     }
 
 

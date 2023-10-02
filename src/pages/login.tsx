@@ -23,7 +23,6 @@ export default function Login() {
             .then((res) => {
                 setAccessToken(res.data.accessToken);
                 setRefreshToken(res.data.refreshToken);
-                console.log("set tokens")
                 navigate('/')
             })
             .catch((err: AxiosError<{ error: string }>) => {

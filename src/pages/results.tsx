@@ -52,7 +52,7 @@ export default function Poll() {
         if (!pollID) return
 
         if (window.WebSocket) {
-            const conn = new WebSocket(`ws://ec2-13-49-102-133.eu-north-1.compute.amazonaws.com/api/ws/${pollID}`);
+            const conn = new WebSocket(`wss://flashpoll-backend.anshmalik.me/api/ws/${pollID}`);
             conn.onopen = () => {
             }
             conn.onclose = () => {

@@ -6,7 +6,8 @@ export default defineConfig({
   plugins: [react()],
   server:{
     proxy: {
-      "/api":"http://localhost:5000"
+      "/api":"https://flashpoll-backend.anshmalik.me",
+      // "/api":"http://localhost:5000"
     }
   }
 })
