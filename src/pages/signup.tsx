@@ -1,4 +1,4 @@
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Input, Button } from '@chakra-ui/react';
 import axios, { AxiosError } from 'axios';
 import { useState } from 'react';
@@ -18,6 +18,7 @@ export default function Signup() {
 
     const [error, setError] = useState("")
     const [errorField, setErrorField] = useState("")
+    const nav = useNavigate();
 
     const handleSignup = () => {
 
@@ -32,7 +33,7 @@ export default function Signup() {
 
         axios.post(`/api/signup`, request)
             .then(() => {
-                redirect('/login')
+                nav('/login')
             })
             .catch((err: AxiosError<{ error: string }>) => {
                 switch (err.response?.data.error) {

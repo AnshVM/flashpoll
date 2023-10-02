@@ -4,9 +4,8 @@ import { LoginRequest } from '../types';
 import axios, { AxiosError } from 'axios';
 import Error from '../components/common/Error';
 import PasswordInput from '../components/common/PasswordInput';
-import { redirect } from 'react-router-dom';
 import { useStore } from '../store/store';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Login() {
 
@@ -17,13 +16,15 @@ export default function Login() {
     const [error, setError] = useState("")
     const setAccessToken = useStore(state => state.setAccessToken)
     const setRefreshToken = useStore(state => state.setRefreshToken)
+    const navigate = useNavigate();
 
     const handleLogin = () => {
         axios.post(`/api/login`, request)
             .then((res) => {
                 setAccessToken(res.data.accessToken);
                 setRefreshToken(res.data.refreshToken);
-                redirect('/')
+                console.log("set tokens")
+                navigate('/')
             })
             .catch((err: AxiosError<{ error: string }>) => {
                 switch (err.response?.data.error) {

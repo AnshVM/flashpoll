@@ -1,4 +1,4 @@
-import { redirect, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -28,12 +28,13 @@ export default function PollSubmitPage() {
 
     const { pollID } = useParams() 
 
+    const nav = useNavigate();
     useEffect(() => {
         if (!pollID || !accessToken) return
         axios.get(`/api/poll/${pollID}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
             .then((res: { data: Poll }) => {
                 if (res.data.userVote.id !== 0) {
-                    redirect(`/poll/results/${pollID}`)
+                    nav(`/poll/results/${pollID}`)
                 }
                 setPoll(res.data)
             })
@@ -48,7 +49,7 @@ export default function PollSubmitPage() {
             { optionID: selectedOption },
             { headers: { Authorization: `Bearer ${accessToken}` } }
         ).then(() => {
-            redirect(`/poll/results/${pollID}`)
+            nav(`/poll/results/${pollID}`)
         })
     }
 

@@ -2,20 +2,21 @@ import { useStore } from '../store/store';
 import { Button } from '@chakra-ui/react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
 
     const setAccessToken = useStore(state => state.setAccessToken)
     const setRefreshToken = useStore(state => state.setRefreshToken)
     const accessToken = useStore(state => state.accessToken)
+    const nav = useNavigate();
 
     const handleLogout = () => {
         setAccessToken("")
         setRefreshToken("")
         axios.post('/api/logout', {})
             .then(() => {
-                redirect('/login')
+                nav('/login')
             })
     }
 
