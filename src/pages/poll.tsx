@@ -6,6 +6,7 @@ import { useStore } from "../store/store";
 import { Button, Skeleton, Stack } from "@chakra-ui/react";
 import { ArrowRightIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
+import { SERVER_BASE_URL } from "../config";
 
 type Option = {
     name: string;
@@ -31,7 +32,7 @@ export default function PollSubmitPage() {
     const nav = useNavigate();
     useEffect(() => {
         if (!pollID || !accessToken) return
-        axios.get(`/api/poll/${pollID}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
+        axios.get(`${SERVER_BASE_URL}/api/poll/${pollID}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
             .then((res: { data: Poll }) => {
                 if (res.data.userVote.id !== 0) {
                     nav(`/poll/results/${pollID}`)
@@ -45,7 +46,7 @@ export default function PollSubmitPage() {
 
     const handleSubmitVote = () => {
         if (selectedOption === -1) return
-        axios.post(`/api/poll/submit`,
+        axios.post(`${SERVER_BASE_URL}/api/poll/submit`,
             { optionID: selectedOption },
             { headers: { Authorization: `Bearer ${accessToken}` } }
         ).then(() => {

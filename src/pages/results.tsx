@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import { useStore } from "../store/store";
 import QRCode from "react-qr-code";
 import { Link, useParams } from "react-router-dom";
+import { SERVER_BASE_URL } from "../config";
 
 type Option = {
     name: string;
@@ -34,7 +35,7 @@ export default function Poll() {
 
     useEffect(() => {
         if (!pollID || !accessToken) return
-        axios.get(`/api/poll/${pollID}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
+        axios.get(`${SERVER_BASE_URL}/api/poll/${pollID}`, { headers: { "Authorization": `Bearer ${accessToken}` } })
             .then((res) => {
                 let data: Poll = res.data
                 data.options = data.options.sort((a, b) => b.votes - a.votes)

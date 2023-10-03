@@ -6,6 +6,7 @@ import Error from '../components/common/Error';
 import { SignupRequest } from '../types';
 import PasswordInput from '../components/common/PasswordInput';
 import { Link } from 'react-router-dom';
+import { SERVER_BASE_URL } from '../config';
 
 export default function Signup() {
 
@@ -31,7 +32,7 @@ export default function Signup() {
         setError("")
         setErrorField("")
 
-        axios.post(`/api/signup`, request)
+        axios.post(`${SERVER_BASE_URL}/api/signup`, request)
             .then(() => {
                 nav('/login')
             })

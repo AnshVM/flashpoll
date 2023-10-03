@@ -6,6 +6,7 @@ import Error from '../components/common/Error';
 import PasswordInput from '../components/common/PasswordInput';
 import { useStore } from '../store/store';
 import { Link, useNavigate } from 'react-router-dom';
+import { SERVER_BASE_URL } from '../config';
 
 export default function Login() {
 
@@ -19,7 +20,7 @@ export default function Login() {
     const navigate = useNavigate();
 
     const handleLogin = () => {
-        axios.post(`/api/login`, request)
+        axios.post(`${SERVER_BASE_URL}/api/login`, request)
             .then((res) => {
                 setAccessToken(res.data.accessToken);
                 setRefreshToken(res.data.refreshToken);

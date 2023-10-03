@@ -7,6 +7,7 @@ import Create from './pages/create';
 import Login from './pages/login';
 import PollSubmitPage from './pages/poll';
 import Poll from './pages/results';
+import { SERVER_BASE_URL } from './config';
 
 export default function App() {
 
@@ -16,7 +17,7 @@ export default function App() {
 
   useEffect(() => {
     if (!setAccessToken || !setRefreshToken) return
-    axios.post(`/api/refresh`, { refreshToken: window.localStorage.getItem('refreshToken') })
+    axios.post(`${SERVER_BASE_URL}/api/refresh`, { refreshToken: window.localStorage.getItem('refreshToken') })
       .then((res) => {
         setAccessToken(res.data.accessToken)
         setRefreshToken(res.data.refreshToken)

@@ -5,6 +5,7 @@ import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 import axios from 'axios'
 import { useStore } from '../store/store'
 import { useNavigate } from 'react-router-dom'
+import { SERVER_BASE_URL } from '../config'
 
 type Option = {
     value: string;
@@ -18,7 +19,7 @@ export default function Create() {
     const nav = useNavigate();
 
     const createPoll = () => {
-        axios.post(`/api/poll`, { title, options: options.map(opt => opt.value) },
+        axios.post(`${SERVER_BASE_URL}/api/poll`, { title, options: options.map(opt => opt.value) },
             {
                 headers: { "Authorization": `Bearer ${accessToken}` }
             }
