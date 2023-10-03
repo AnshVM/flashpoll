@@ -77,7 +77,7 @@ export default function Poll() {
                         <h1 className="text-5xl font-bold">{poll.title}</h1>
                         <div className="mt-4">
                             <p className="opacity-80 font-semibold">For vote submission navigate to:</p>
-                            <Link className="opacity-50" to={`${window.location.origin}/poll/${pollID}`}>{`${window.location.origin}/poll/${pollID}`}</Link>
+                            <Link className="opacity-50" to={`${window.location.origin}/#/poll/${pollID}`}>{`${window.location.origin}/#/poll/${pollID}`}</Link>
                         </div>
                         <div className="flex flex-row gap-5 mt-5">
                             <div className="flex flex-col gap-3 flex-grow">
